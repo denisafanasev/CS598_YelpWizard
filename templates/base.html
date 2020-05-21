@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Yelp wizard</title>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="{{ url_for('static' , filename="css/bootstrap.min.css")}}" rel="stylesheet">
+        <link href="{{ url_for('static' , filename="css/bootstrap-reboot.min.css")}}" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <script src="//www.amcharts.com/lib/4/core.js"></script>
+        <script src="//www.amcharts.com/lib/4/charts.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        
+    </head>
+
+    <body data-gr-c-s-loaded="true">
+
+        <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Yelp wizard</a>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/data_manager">Data management</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        {% block left_block %}{% endblock %}
+                    </div>
+                </nav>
+        
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-2 px-2">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-1">
+
+                            <form id="navForm_topics" method="post" enctype="multipart/form-data">
+                                <div class="card text-white bg-success mb-1" style="width: 25rem;">
+                                    <input type="hidden" name="action" value="goto">
+                                    {% if view == "topics"  %}
+                                        <button id = "topics_but" type="submit" name="value" value="topics" class="btn btn-success btn-lg btn-block">
+                                    {% else %}
+                                        <button id="topics_but" type="submit" name="value" value="topics" class="btn btn-primary btn-lg btn-block">
+                                    {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">Reviews</h5>
+                                            <p class="card-text">There are <strong>{{ review_number }}</strong> reviews</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <form id="navForm_cuisines" method="post" enctype="multipart/form-data">
+                                <div class="card text-white bg-primary mb-1" style="width: 25rem;">
+                                    <input type="hidden" name="action" value="goto">
+                                    {% if view == "cousines"  %}
+                                        <button id = "cousines_but" type="submit" name="value" value="cousines" class="btn btn-success btn-lg btn-block">
+                                    {% else %}
+                                        <button id="cousines_but" type="submit" name="value" value="cousines" class="btn btn-primary btn-lg btn-block">
+                                    {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">Cousines</h5>
+                                            <p class="card-text">There are <strong>{{ cousine_number }}</strong> cousins
+                                            </p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <form id="navForm_rests" method="post" enctype="multipart/form-data">
+                                <div class="card text-white bg-primary mb-1" style="width: 25rem;">
+                                    <input type="hidden" name="action" value="goto">
+                                    {% if view == "rests"  %}
+                                        <button id = "rests_but" type="submit" name="value" value="rests" class="btn btn-success btn-lg btn-block">
+                                    {% else %}
+                                        <button id="rests_but" type="submit" name="value" value="rests" class="btn btn-primary btn-lg btn-block">
+                                    {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">Restaraunt</h5>
+                                            <p class="card-text">There are <strong>{{ rest_number }}</strong> restaraunts
+                                            </p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    <div pt-2 px-2></div>
+                        {% block main_header_block %}{% endblock %}
+                        
+                        {% block main_block %}{% endblock %}
+                    </div>
+
+                </main>
+            </div>
+        </div>
+    </body>
+
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js"
+        integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous">
+    </script>
+    <script src="{{ url_for('static' , filename="js/bootstrap.min.js")}}"></script>
+</html>

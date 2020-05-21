@@ -1,0 +1,5 @@
+flask
+gensim
+pandas
+sklearn
+nltk

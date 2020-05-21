@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block left_block %}
+
+<nav class="navbar navbar-full navbar-light bg-faded p-1">
+    
+        <div class="card" style="width: 100%;">
+            <p class="text-left"> <small>
+                 Here is a list of all restaurants in the database which has a dominant topic which was chosen on the "Topics" page and
+                also serves a cuisine which was chosen on the "Cuisine" page. <br> <br>
+                 - In case no cuisine has been chosen, only topic filter applies. <br> <br>
+                 - In case no topic has been chosen, the whole list of restaurants shows. <br> <br>
+                 Also, you can back to any previous pages and change your chose of topic and cuisine.
+                </small>
+            </p>
+        </div>
+
+</nav>
+
+<nav class="navbar navbar-full navbar-light bg-faded">
+
+</nav>
+
+{% endblock %}
+
+{% block main_header_block %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center p-1">
+    <div class="card" style="width: 100%;">
+        <p class="text-center"><b>Here is a list of restaurants for topic and cuisine which you have choose for your evaluation:</b></p>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block main_block %}
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">State</th>
+                <th scope="col">Rest name</th>
+                <th scope="col">Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rest in _data %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ rest[0] }}</td>
+                    <td>{{ rest[1] }}</td>
+                    <td>{{ rest[2] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

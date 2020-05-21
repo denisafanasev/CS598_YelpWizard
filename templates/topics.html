@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+
+{% block left_block %}
+    <nav class="navbar navbar-full navbar-light bg-faded p-1">
+        <div class="card" style="width: 100%;">
+            <p class="text-left">
+                <small>
+                    You can try different parameters for topic mining. <br><br> Based on this parameters all reviews for all restaurants will be processed.
+                </small>
+            </p>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-full navbar-light bg-faded p-1" hidden="false">
+        <form id="forceMining" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="process">
+            <input type="hidden" name="value" value="none">
+            <button type="button" class="btn btn-danger btn-lg btn-block push-button" id="cousines_but" type="submit" name="value" value="cousines">GO</button>
+        </form>
+    </nav>
+
+    
+    <form id="modelForm" method="post" enctype="multipart/form-data">
+        
+        <div class="list-group model-manager">
+            <a href="#" class="list-group-item list-group-item-action none-manager-item bg-light text-center"><b>Model type</b></a>
+            <a href="#" class="list-group-item list-group-item-action model-manager-item" name="LDA">Latent Dirichlet Allocation (LDA)</a>
+        </div>
+
+        <p></p>
+        <div class="list-group topic-manager width: 100%">
+            <a href="#" class="list-group-item list-group-item-action none-manager-item bg-light text-center"><b>Topics number</b></a>
+            <a href="#" class="list-group-item list-group-item-action topic-manager-item" name="10">10</a>
+            <a href="#" class="list-group-item list-group-item-action topic-manager-item" name="15">15</a>
+            <a href="#" class="list-group-item list-group-item-action topic-manager-item" name="20">20</a>
+        </div>
+
+        <p></p>
+        <div class="list-group word-manager width: 100%">
+            <a href="#" class="list-group-item list-group-item-action none-manager-item bg-light text-center"><b>Words number</b></a>
+            <a href="#" class="list-group-item list-group-item-action word-manager-item" name="10">10</a>
+            <a href="#" class="list-group-item list-group-item-action word-manager-item" name="15">15</a>
+            <a href="#" class="list-group-item list-group-item-action word-manager-item" name="20">20</a>
+        </div>
+
+        <p></p>
+        <button type="button" class="btn btn-danger btn-lg btn-block push-button">Change model</button>
+
+        <script>
+
+            var model = "{{ model }}";
+            var topics_number = "{{ topics_number }}";
+            var words_number = "{{ words_number }}";
+
+            $(document).ready(function () {
+                $(".model-manager-item").click(function () {
+
+                    var listItems = $(".model-manager-item");
+
+                    for (let i = 0; i < listItems.length; i++) {
+                        listItems[i].classList.remove("active");
+                    }
+
+                    this.classList.add("active");
+                    model = this.name;
+                });
+            });
+
+         </script>
+         <script>
+            $(document).ready(function () {
+                $(".topic-manager-item").click(function () {
+
+                    var listItems = $(".topic-manager-item");
+
+                    for (let i = 0; i < listItems.length; i++) {
+                        listItems[i].classList.remove("active");
+                    }
+
+                    this.classList.add("active");
+                    topics_number = this.name;
+                });
+            });
+
+         </script>
+         <script>
+            $(document).ready(function () {
+                $(".word-manager-item").click(function () {
+
+                    var listItems = $(".word-manager-item");
+
+                    for (let i = 0; i < listItems.length; i++) {
+                        listItems[i].classList.remove("active");
+                    }
+
+                    this.classList.add("active");
+                    words_number = this.name;
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $(".push-button").click(function () {
+                        
+                    let form=document.createElement('form'); form.method='POST' ;
+                    
+                    form.innerHTML='<input type="hidden" name="action" value="set_model">'
+                        + '<input type="hidden" name="value" value="' + model + '">' +
+                        '<input type="hidden" name="topics" value="' + topics_number + '">' +
+                        '<input type="hidden" name="words" value="' + words_number + '">'; 
+                    
+                    document.body.append(form);
+                    form.submit();
+                });
+            });
+        </script>
+
+    </form>
+
+    <script>
+        $(document).ready(function () {$("body").click(loadPage()) });
+    </script>
+
+    <script>
+        function loadPage() {
+            
+            var listItems = $(".word-manager-item");
+
+            for (let i = 0; i < listItems.length; i++) {
+                listItems[i].classList.remove("active");
+                if (words_number == listItems[i].name) {
+                    listItems[i].classList.add("active");
+                }
+            }
+
+            var listItems = $(".topic-manager-item");
+
+            for (let i = 0; i < listItems.length; i++) {
+                listItems[i].classList.remove("active");
+                if (topics_number == listItems[i].name) {
+                    listItems[i].classList.add("active");
+                }
+            }
+
+            var listItems = $(".model-manager-item");
+
+            for (let i = 0; i < listItems.length; i++) {
+                listItems[i].classList.remove("active");
+                if (model == listItems[i].name) {
+                    listItems[i].classList.add("active");
+                }
+            }
+        }
+    </script>
+    
+{% endblock %}
+
+{% block main_header_block %}
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center p-1">
+        <div class="card" style="width: 100%;">
+            <p class="text-center"><b>By clicking on any words from topics below you can choose which topic you would like to use as a filter for cuisines and restaurants:</b></p>
+        </div>
+    </div>
+
+    {% endblock %}
+
+{% block main_block %}
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 700px;
+        }
+    </style>
+
+    <div id="chartdiv"></div>
+
+    <script>
+        var chart = am4core.create("chartdiv", am4charts.TreeMap);
+        var _data = '{{ topics_data|tojson }}';
+
+        _data = JSON.parse(_data);
+        chart.data = _data;
+        
+        chart.maxLevels = 2;
+        chart.zoomable = false;
+
+        /* Set color step */
+        chart.colors.step = 2;
+        
+        /* Define data fields */
+        chart.dataFields.value = "value";
+        chart.dataFields.name = "name";
+        chart.dataFields.children = "children";
+        chart.dataFields.color = "color";
+        
+        var level1 = chart.seriesTemplates.create("0");
+        var level1_column = level1.columns.template;
+        level1_column.fillOpacity = 0;
+        level1_column.strokeOpacity = 0;
+
+        /* Create second-level series */
+        var level2 = chart.seriesTemplates.create("1");
+        var level2_column = level2.columns.template;
+        level2_column.column.cornerRadius(1, 1, 1, 1);
+        level2_column.fillOpacity = 0.8;
+        level2_column.stroke = am4core.color("#fff");
+        level2_column.strokeWidth = 1;
+        level2_column.strokeOpacity = 1;
+
+        var level2_bullet = level2.bullets.push(new am4charts.LabelBullet());
+        level2_bullet.locationY = 0.5;
+        level2_bullet.locationX = 0.5;
+        level2_bullet.label.text = "{name}";
+        level2_bullet.label.fill = am4core.color("#fff");
+
+        var columnTemplate = level2.columns.template;
+
+        level2_column.events.on("hit", function (ev) {     
+
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.innerHTML = '<input type="hidden" name="action" value="set_active_topic">' +
+                '<input type="hidden" name="value" value="' + ev.target.parent.dataItem.dataContext.name + '">';
+            document.body.append(form);
+            form.submit();
+
+        }, this);
+
+    </script>
+{% endblock %}

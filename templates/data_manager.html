@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block left_block %}
+<nav class="navbar navbar-full navbar-light bg-faded p-1">
+    <div class="card" style="width: 100%;">
+        <p class="text-left">
+            <small>
+                Here you can upload your own dataset (pls use a subset of yelp_academic_dataset_review.json) and choose different datasets for evaluation.
+            </small>
+        </p>
+    </div>
+
+    <button type="button" class="btn btn-danger btn-lg btn-block push-button">Change dataset</button>
+    
+    <script>
+        $(document).ready(function () {
+            $(".push-button").click(function () {
+
+                let form = document.createElement('form'); form.method = 'POST';
+
+                form.innerHTML = '<input type="hidden" name="action" value="set_dataset">'
+                    + '<input type="hidden" name="value" value="' + dataset_name + '">';
+
+                document.body.append(form);
+                form.submit();
+            });
+        });
+    </script>
+</nav>
+
+<script>
+
+    var dataset_name = "{{ _dataset_name }}";
+
+</script>
+
+<script>
+    $(document).ready(function () { $("body").click(loadPage()) });
+</script>
+
+<script>
+    function loadPage() {
+
+        var listItems = $(".data-manager-item");
+
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].classList.remove("active");
+            if (dataset_name == listItems[i].name) {
+                listItems[i].classList.add("active");
+            }
+        }
+    }
+</script>
+
+{% endblock %}
+
+{% block main_header_block %}
+
+{% endblock %}
+
+{% block main_block %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center p-1">
+    <div class="card" style="width: 100%;">
+        <form method=post enctype=multipart/form-data>
+            <div class="form-group">
+                <div class="p-2">
+                    <p class="text-center"><b>Dataset file uploader</b>
+                    <input type="hidden" name="action" value="upload">
+                    <input type="file" class="form-control-file" id="FormControlFile1" name="file">
+                    <button type="submit" class="btn btn-danger">Upload dataset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="list-group word-manager width: 100%">
+    <a href="#"
+        class="list-group-item list-group-item-action none-manager-item bg-light text-center"><b>Datasets</b></a>
+    {% for _dataset in _datasets %}
+        <a href="#" class="list-group-item list-group-item-action data-manager-item" name="{{ _dataset }}">{{ _dataset }}</a>
+    {% endfor %}
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".data-manager-item").click(function () {
+
+            var listItems = $(".data-manager-item");
+
+            for (let i = 0; i < listItems.length; i++) {
+                listItems[i].classList.remove("active");
+            }
+
+            this.classList.add("active");
+            dataset_name = this.name;
+        });
+    });
+</script>
+
+{% endblock %}
