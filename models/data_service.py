@@ -165,3 +165,8 @@ class DataService():
             _topics2cousines = pickle.load(f)
 
         return _topics2cousines
+
+    def save_model(self, _model, _model_name, _active_dataset):
+        _model.save(config.path2data + _active_dataset + "." + _model_name + ".model")
+
+        return True

@@ -15,45 +15,45 @@ class DataProcessor():
 
     def process_business_raw_data(self):
 
-            categories = {}
-            cat2rid = {}
+        categories = {}
+        cat2rid = {}
 
-            _business = []
-            _cousine2business = []
+        _business = []
+        _cousine2business = []
 
-            print("Rest data processing start...")
+        print("Rest data processing start...")
 
-            with open(config.path2raw_buisness, 'r') as f:
-                _lines = f.readlines()
+        with open(config.path2raw_buisness, 'r') as f:
+            _lines = f.readlines()
 
-                for line in _lines:
+            for line in _lines:
 
-                    business_json = json.loads(line)
-                    bjc = business_json['categories']
+                business_json = json.loads(line)
+                bjc = business_json['categories']
 
-                    if config.r in bjc:
-                        if len(bjc) > 1:
-                            restaurant_id = business_json['business_id']
-                            stars = business_json['stars']
-                            name = business_json['name']
-                            review_count = business_json['review_count']
-                            state = business_json['state']
-                            address = business_json['full_address']
+                if config.r in bjc:
+                    if len(bjc) > 1:
+                        restaurant_id = business_json['business_id']
+                        stars = business_json['stars']
+                        name = business_json['name']
+                        review_count = business_json['review_count']
+                        state = business_json['state']
+                        address = business_json['full_address']
 
-                            _business.append({'business_id': restaurant_id, 'name': name, 'stars': stars,
-                                              'state': state, 'review_count': review_count})
+                        _business.append({'business_id': restaurant_id, 'name': name, 'stars': stars,
+                                            'state': state, 'review_count': review_count})
 
-                            for cat in bjc:
-                                if cat == config.r:
-                                    continue
+                        for cat in bjc:
+                            if cat == config.r:
+                                continue
 
-                                if cat in cat2rid:
-                                    cat2rid[cat].append(restaurant_id)
-                                else:
-                                    cat2rid[cat] = [restaurant_id]
+                            if cat in cat2rid:
+                                cat2rid[cat].append(restaurant_id)
+                            else:
+                                cat2rid[cat] = [restaurant_id]
 
-                                _cousine2business.append(
-                                    {'cousine': cat, 'business_id': restaurant_id})
+                            _cousine2business.append(
+                                {'cousine': cat, 'business_id': restaurant_id})
 
             print("Saving restaurant data to CVS...")
 

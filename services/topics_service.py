@@ -1,5 +1,5 @@
 from gensim import corpora, models, similarities, matutils, parsing
-from gensim.models import LdaModel, LsiModel, HdpModel
+from gensim.models import LdaModel
 import gensim
 from sklearn.feature_extraction.text import TfidfVectorizer
 from time import time
@@ -15,12 +15,28 @@ class TopicsService():
     model = gensim.models.basemodel.BaseTopicModel()
 
     def model_save(self, _model, _model_name, _active_dataset):
-        _model.save(config.path2data + _active_dataset +
-                    "." + _model_name + ".model")
-        return True
+        """
+        Save trained model to disk
+        @params:
+            _model          - Required  : model (gensim.models.LdaModel)
+            _model_name     - Required  : name of the active topic model (Str)
+            _active_dataset - Required  : name of active dataset (Str)
+        """
+
+        result = self.data_service.save_model(_model, _model_name, _active_dataset)
+
+        return result
 
     def model_load(self, _model_name, _active_dataset):
-        # TODO: тут надо проверять что созданы нужные файлы
+        """
+        Load pre-trained model from disk
+        @params:
+            _model_name        - Required  : name of the topic mining model(Str)
+            _active_dataset    - Required  : name of active dataset (Str)
+        """
+
+        # TODO: тут надо проверять что созданы все нужные файлы
+        # TODO: перенести загрузку в слой работы с данными
         try:
             self.model = models.LdaModel.load(
                 config.path2data + _active_dataset + "." + _model_name + ".model")
@@ -33,10 +49,23 @@ class TopicsService():
         return True
 
     def __init__(self, _model_name, _active_dataset):
+        """
+        Constructor
+        @params:
+            _model_name     - Required  : name of the active topic model (Str)
+            _active_dataset - Required  : name of active dataset (Str)
+        """
+
         self.data_service = DataService(_active_dataset)
         self.model_load(_model_name, _active_dataset)
 
     def topic_mining(self, _active_dataset):
+        """
+        Internal function for process topic mining and sace trained models
+        @params:
+            _active_dataset - Required  : name of active dataset (Str)
+        """
+
         # TODO: перенести сохранение в файлы в слой models
 
         print("topic minning start..")
@@ -96,8 +125,6 @@ class TopicsService():
         with open(config.path2data + _active_dataset + "." + _model_name + "_" + config.path2rests2topics, 'wb') as f:
             pickle.dump(_rests_topics, f)
 
-        ###################################################################
-
         #####################################################################
         _model_name = "LDA15"
         self.modelLDA_15 = LdaModel(corpus, num_topics=15, id2word=id2words)
@@ -136,8 +163,6 @@ class TopicsService():
 
         with open(config.path2data + _active_dataset + "." + _model_name + "_" + config.path2rests2topics, 'wb') as f:
             pickle.dump(_rests_topics, f)
-
-        ###################################################################
 
         #####################################################################
         _model_name = "LDA20"
@@ -184,6 +209,11 @@ class TopicsService():
         return self.modelLDA_10
 
     def get_topics(self, _num_words=10):
+        """
+        Return a list of topics
+        @params:
+            _num_words     - Option  : number of words for each topic to return (Int)
+        """
 
         _topics = []
         for i, item in enumerate(self.model.show_topics(num_topics=20, num_words=_num_words, formatted=False)):
@@ -196,8 +226,19 @@ class TopicsService():
         return _topics
 
     def process_topics_mining(self, _active_dataset):
+        """
+        Process topic mining and sace trained models
+        @params:
+            _active_dataset - Required  : name of active dataset (Str)
+        """
+
         _result = self.topic_mining(_active_dataset)
         return _result
 
     def get_review_number(self):
+        """
+        Return a number of reviews in active dataset
+        @params:
+        """
+
         return self.data_service.get_review_number()
