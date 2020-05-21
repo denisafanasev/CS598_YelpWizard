@@ -159,3 +159,9 @@ class DataService():
     def save_dataset(self, _file):
         file = _file
         file.save(os.path.join(config.path2datasets, file.name))
+
+    def load_model(self, _model_name, _active_dataset):
+        with open(config.path2data + _active_dataset + "." + _model_name + "_" + config.path2topics2cousines, 'rb') as f:
+            _topics2cousines = pickle.load(f)
+
+        return _topics2cousines

@@ -22,9 +22,8 @@ class CousinesService():
             _active_dataset    - Required  : name of active dataset (Str)
         """
 
-        # TODO: тут тоже надо бы проверить все ли файлы на месте (и исключения отработать)
-        with open(config.path2data + _active_dataset + "." + _model_name + "_" + config.path2topics2cousines, 'rb') as f:
-            _topics2cousines = pickle.load(f)
+        _topics2cousines = self.data_service.load_model(
+            _model_name, _active_dataset)
 
         return _topics2cousines
 
@@ -111,27 +110,28 @@ class CousinesService():
 
     def get_cousines(self, _active_topic=None, _active_cousine=None, active_sim_function=None):
         """
-        Return a list of cuisines for topic
+        Return a list of cuisines for topic and number of zero topic for
+        distant calculation
         @params:
             _active_topic        - Option  : name of the active topic (Str)
             _active_cousine      - Option  : name of active cuisine (Str)
             _active_sim_function - Option  : name of similarity function (Str)
         """
-
-        # TODO: сделать рефакторинг, логику, связанную с представлением, перенести в контроллер
         _data = []
 
-        i = random.randint(0, len(self.topics2cousines))
-
+        # в результате работы функции нам надо вернуть список кухонь с растояниями до центральной кухни
+        # поэтоу обязательно надо иметь одную ключевую кухню, относительно которой определять растояния
+        # ко всем остальным
+        i = None
         if _active_cousine is not None:
             # найдем номер активной кухни по ее названию
-            for i, _temp in enumerate(self.topics2cousines):
+            for _i, _temp in enumerate(self.topics2cousines):
                 if _temp[0] == _active_cousine:
+                    i = _i
                     break
 
-        else:
+        if i is None and _active_topic is not None:
             # найдем основную кухню для данного топика
-
             _max_i = 0
             _max_w = 0
 
@@ -145,7 +145,11 @@ class CousinesService():
 
             i = _max_i
 
-        # TODO: index of range bug
+        if i is None:
+            # ну если вообще почему то на текущий момент нет оснвной кухни, то берем просто случайную
+            i = random.randint(0, len(self.topics2cousines))
+
+        # получаем нужную матрицу растояний
         if active_sim_function is not None:
             if active_sim_function == "sim_ed":
                 _cousine_vec = self.cuisine_matrix_ed[i]
@@ -155,29 +159,15 @@ class CousinesService():
             _cousine_vec = self.cuisine_matrix_ed[i]
 
         for j, _cousine in enumerate(_cousine_vec[1]):
-
-            if _active_cousine is not None:
-                if i == j:
-                    _count = 70000
-                else:
-                    _count = int(math.exp(_cousine * 10))
-            else:
-                _count = int(math.exp(_cousine * 10))
-
-            _data.append(
-                {"tag": self.topics2cousines[j][0], "count": _count})
-
-        # оставляем только те кухни, для которых выбранные топик - самый доминирующий
-        _data_filtered = []
-        if _active_topic is not None:
-            for _cousine in _data:
-                _topic, _w = self.get_topic_for_cousine(_cousine['tag'])
+            if _active_topic is not None:
+                _topic, _w = self.get_topic_for_cousine(
+                    self.topics2cousines[j][0])
                 if _topic == _active_topic:
-                    _data_filtered.append(_cousine)
-        else:
-            _data_filtered = _data
+                    _data.append([self.topics2cousines[j][0], _cousine])
+            else:
+                _data.append([self.topics2cousines[j][0], _cousine])
 
-        return _data_filtered
+        return i, _data
 
     def get_cousine_number(self, _active_topic=None):
         """
@@ -185,5 +175,5 @@ class CousinesService():
         @params:
             _active_topic     - Option  : name of the active topic (Str)
         """
-
-        return len(self.get_cousines(_active_topic))
+        i, _data = self.get_cousines(_active_topic)
+        return len(_data)

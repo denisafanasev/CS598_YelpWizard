@@ -87,7 +87,6 @@ def reload_data(_model_name, active_dataset):
     rpc.reload(_model_name, active_dataset)
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def choose_topic():
 
@@ -112,7 +111,7 @@ def choose_topic():
             _words = request.form['words']
             set_model(_model, _topics, _words)
 
-            reload_data(_model_name, active_dataset)
+            reload_data(get_model_name(), active_dataset)
 
         if _action == 'goto':
             return page_route("topics", _value)

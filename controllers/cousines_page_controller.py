@@ -1,3 +1,5 @@
+import random
+import math
 from services.cousines_service import CousinesService
 import utils.ada as ada
 
@@ -35,12 +37,26 @@ class CousinesPageController():
         """
 
         _data = []
-        _data = self.cousines_service.get_cousines(
+        i, _data = self.cousines_service.get_cousines(
             _active_topic, _active_cousine, _active_sim_function)
 
         # преобразование списка кухнь для визуализации
 
-        return _data
+        _data_to_show = []
+        for j, _cousine in enumerate(_data):
+
+            if _active_cousine is not None:
+                if i == j:
+                    _count = 70000
+                else:
+                    _count = int(math.exp(_cousine[1] * 10))
+            else:
+                _count = int(math.exp(_cousine[1] * 10))
+
+            _data_to_show.append(
+                {"tag": _cousine[0], "count": _count})
+
+        return _data_to_show
 
     def reload(self, _model_name, _active_dataset):
         """
