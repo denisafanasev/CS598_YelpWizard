@@ -41,7 +41,7 @@ For data mining I used the following tools and libraries for Python:
 
 **User guide**
 
-[https://github.com/denisafanasev/CS598_YelpWizard/wiki/User-guide]
+[https://github.com/denisafanasev/CS598_YelpWizard/blob/master/docs/YelpWizard_User_guide.pdf]
 
 **Run**
 
