@@ -20,8 +20,9 @@ By default, the application operates by the whole this dataset but also, a user 
 **Functions and goals**
 
 The key goal of the application is to allow user to find a restaurant which could be interested for him based on data mining algorithms instead of the standard filters which available on Yelp service. So, in the application there are two key functions:
-    • Topic mining - which allow user to apply LDA algorithm with different parameters for all reviews in the dataset and choose which topic is interested. Based on this choose the application will show a list of cuisines and a list of restaurants for which chosen topic is a topic with the highs weight. It allows user to choose restaurant based on topics and key words of each topic, instead of normal search by keywords.
-    • Text similarities - which allow user to choose cuisine based on measure of similarities between cuisines based on review's texts. It allows user to evaluate a cuisines data set and find an interesting cuisine based on similarities between texts.
+
+- Topic mining - which allow user to apply LDA algorithm with different parameters for all reviews in the dataset and choose which topic is interested. Based on this choose the application will show a list of cuisines and a list of restaurants for which chosen topic is a topic with the highs weight. It allows user to choose restaurant based on topics and key words of each topic, instead of normal search by keywords.
+- Text similarities - which allow user to choose cuisine based on measure of similarities between cuisines based on review's texts. It allows user to evaluate a cuisines data set and find an interesting cuisine based on similarities between texts.
     
 **Toolkit and libraries**
 
