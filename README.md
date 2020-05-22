@@ -11,8 +11,8 @@ During this task I developed a "Yelp wizard" application which allow users to ev
 **Dataset description**
 
 For the task we will use Yelp's reviews data set:
-"yelp_academic_dataset_review.json"  
-"yelp_academic_dataset_business.json" 
+- "yelp_academic_dataset_review.json"  
+- "yelp_academic_dataset_business.json" 
 
 with 703508 reviews for 14035 business. Each business linked to a set of categories like type of business, cuisines and so on. Before topic mining we will pre-process this file and choose review only for venues, which are in "Restaurant" category and extracts the set of cuisines which get us a set of 239 cuisines in whole.
 By default, the application operates by the whole this dataset but also, a user could upload any subset of this dataset for evaluation.
