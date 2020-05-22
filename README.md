@@ -26,12 +26,14 @@ The key goal of the application is to allow user to find a restaurant which coul
 **Toolkit and libraries**
 
 To develop the application, I used:
+
 • Python - as general language
 • Flask - application server
 • amCharts - for charts and visualisation
 • Bootstrap - for user interface
 
 For data mining I used the following tools and libraries for Python:
+
 • Sklearn - for classification
 • Gensim - for text processing
 • Numpy - for some additional tool
