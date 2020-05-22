@@ -40,4 +40,11 @@ For data mining I used the following tools and libraries for Python:
 - NLTK - for text processing
 
 **User guide**
+
 [https://github.com/denisafanasev/CS598_YelpWizard/wiki/User-guide]
+
+**Run**
+
+flask run --host=0.0.0.0 &
+
+
