@@ -27,10 +27,10 @@ The key goal of the application is to allow user to find a restaurant which coul
 
 To develop the application, I used:
 
-• Python - as general language
-• Flask - application server
-• amCharts - for charts and visualisation
-• Bootstrap - for user interface
+- Python - as general language
+- Flask - application server
+- amCharts - for charts and visualisation
+- Bootstrap - for user interface
 
 For data mining I used the following tools and libraries for Python:
 
