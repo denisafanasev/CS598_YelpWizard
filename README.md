@@ -38,3 +38,4 @@ For data mining I used the following tools and libraries for Python:
 • Gensim - for text processing
 • Numpy - for some additional tool
 • NLTK - for text processing
+
